@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" Namespace="LightSwitchApplication" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="Ticket">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="ShortDescription" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Description" Type="Edm.String" MaxLength="255" />
+    <Property Name="DateOpened" Type="Edm.DateTime" Nullable="false" />
+    <Property Name="DateClosed" Type="Edm.DateTime" />
+    <Property Name="Ticket_Client" Type="Edm.Int32" Nullable="false" />
+    <Property Name="Ticket_User" Type="Edm.Int32" Nullable="false" />
+    <Property Name="Ticket_Project" Type="Edm.Int32" Nullable="false" />
+    <NavigationProperty Name="Actions" Relationship="LightSwitchApplication.Action_Ticket" ToRole="Action" FromRole="Ticket" />
+    <NavigationProperty Name="Client" Relationship="LightSwitchApplication.Ticket_Client" ToRole="Client" FromRole="Ticket" />
+    <NavigationProperty Name="User" Relationship="LightSwitchApplication.Ticket_User" ToRole="User" FromRole="Ticket" />
+    <NavigationProperty Name="Project" Relationship="LightSwitchApplication.Ticket_Project" ToRole="Project" FromRole="Ticket" />
+  </EntityType>
+  <EntityType Name="Action">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="ActionDate" Type="Edm.DateTime" Nullable="false" />
+    <Property Name="ActionText" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Time" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="Action_Ticket" Type="Edm.Int32" Nullable="false" />
+    <NavigationProperty Name="Ticket" Relationship="LightSwitchApplication.Action_Ticket" ToRole="Ticket" FromRole="Action" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="IsExternal" Type="Edm.Boolean" />
+    <NavigationProperty Name="ClientUserMaps" Relationship="LightSwitchApplication.ClientUserMap_Client" ToRole="ClientUserMap" FromRole="Client" />
+    <NavigationProperty Name="Tickets" Relationship="LightSwitchApplication.Ticket_Client" ToRole="Ticket" FromRole="Client" />
+    <NavigationProperty Name="ProjectClientMaps" Relationship="LightSwitchApplication.ProjectClientMap_Client" ToRole="ProjectClientMap" FromRole="Client" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="FirstName" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="LastName" Type="Edm.String" MaxLength="255" />
+    <Property Name="MiddleName" Type="Edm.String" MaxLength="255" />
+    <Property Name="ADUserName" Type="Edm.String" MaxLength="255" />
+    <Property Name="ADsid" Type="Edm.String" MaxLength="255" />
+    <Property Name="Email" Type="Edm.String" MaxLength="255" />
+    <Property Name="IsAD" Type="Edm.Boolean" />
+    <Property Name="IsTech" Type="Edm.Boolean" />
+    <Property Name="IsQueue" Type="Edm.Boolean" />
+    <NavigationProperty Name="ClientUserMaps" Relationship="LightSwitchApplication.ClientUserMap_User" ToRole="ClientUserMap" FromRole="User" />
+    <NavigationProperty Name="Tickets" Relationship="LightSwitchApplication.Ticket_User" ToRole="Ticket" FromRole="User" />
+  </EntityType>
+  <EntityType Name="ClientUserMap">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="ClientUserMap_User" Type="Edm.Int32" Nullable="false" />
+    <Property Name="ClientUserMap_Client" Type="Edm.Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="LightSwitchApplication.ClientUserMap_User" ToRole="User" FromRole="ClientUserMap" />
+    <NavigationProperty Name="Client" Relationship="LightSwitchApplication.ClientUserMap_Client" ToRole="Client" FromRole="ClientUserMap" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <NavigationProperty Name="ProjectClientMaps" Relationship="LightSwitchApplication.ProjectClientMap_Project" ToRole="ProjectClientMap" FromRole="Project" />
+    <NavigationProperty Name="Tickets" Relationship="LightSwitchApplication.Ticket_Project" ToRole="Ticket" FromRole="Project" />
+  </EntityType>
+  <EntityType Name="ProjectClientMap">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="ProjectClientMap_Client" Type="Edm.Int32" Nullable="false" />
+    <Property Name="ProjectClientMap_Project" Type="Edm.Int32" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="LightSwitchApplication.ProjectClientMap_Client" ToRole="Client" FromRole="ProjectClientMap" />
+    <NavigationProperty Name="Project" Relationship="LightSwitchApplication.ProjectClientMap_Project" ToRole="Project" FromRole="ProjectClientMap" />
+  </EntityType>
+  <Association Name="Action_Ticket">
+    <End Role="Ticket" Type="LightSwitchApplication.Ticket" Multiplicity="1" />
+    <End Role="Action" Type="LightSwitchApplication.Action" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ticket">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Action">
+        <PropertyRef Name="Action_Ticket" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientUserMap_User">
+    <End Role="User" Type="LightSwitchApplication.User" Multiplicity="1" />
+    <End Role="ClientUserMap" Type="LightSwitchApplication.ClientUserMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientUserMap">
+        <PropertyRef Name="ClientUserMap_User" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientUserMap_Client">
+    <End Role="Client" Type="LightSwitchApplication.Client" Multiplicity="1" />
+    <End Role="ClientUserMap" Type="LightSwitchApplication.ClientUserMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientUserMap">
+        <PropertyRef Name="ClientUserMap_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_Client">
+    <End Role="Client" Type="LightSwitchApplication.Client" Multiplicity="1" />
+    <End Role="Ticket" Type="LightSwitchApplication.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_User">
+    <End Role="User" Type="LightSwitchApplication.User" Multiplicity="1" />
+    <End Role="Ticket" Type="LightSwitchApplication.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_User" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjectClientMap_Client">
+    <End Role="Client" Type="LightSwitchApplication.Client" Multiplicity="1" />
+    <End Role="ProjectClientMap" Type="LightSwitchApplication.ProjectClientMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectClientMap">
+        <PropertyRef Name="ProjectClientMap_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjectClientMap_Project">
+    <End Role="Project" Type="LightSwitchApplication.Project" Multiplicity="1" />
+    <End Role="ProjectClientMap" Type="LightSwitchApplication.ProjectClientMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectClientMap">
+        <PropertyRef Name="ProjectClientMap_Project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_Project">
+    <End Role="Project" Type="LightSwitchApplication.Project" Multiplicity="1" />
+    <End Role="Ticket" Type="LightSwitchApplication.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_Project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ApplicationDataObjectContext" m:IsDefaultEntityContainer="true">
+    <EntitySet Name="Tickets" EntityType="LightSwitchApplication.Ticket" />
+    <EntitySet Name="Actions" EntityType="LightSwitchApplication.Action" />
+    <EntitySet Name="Clients" EntityType="LightSwitchApplication.Client" />
+    <EntitySet Name="Users" EntityType="LightSwitchApplication.User" />
+    <EntitySet Name="ClientUserMaps" EntityType="LightSwitchApplication.ClientUserMap" />
+    <EntitySet Name="Projects" EntityType="LightSwitchApplication.Project" />
+    <EntitySet Name="ProjectClientMaps" EntityType="LightSwitchApplication.ProjectClientMap" />
+    <AssociationSet Name="Action_Ticket" Association="LightSwitchApplication.Action_Ticket">
+      <End Role="Ticket" EntitySet="Tickets" />
+      <End Role="Action" EntitySet="Actions" />
+    </AssociationSet>
+    <AssociationSet Name="ClientUserMap_User" Association="LightSwitchApplication.ClientUserMap_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ClientUserMap" EntitySet="ClientUserMaps" />
+    </AssociationSet>
+    <AssociationSet Name="ClientUserMap_Client" Association="LightSwitchApplication.ClientUserMap_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ClientUserMap" EntitySet="ClientUserMaps" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_Client" Association="LightSwitchApplication.Ticket_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_User" Association="LightSwitchApplication.Ticket_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="ProjectClientMap_Client" Association="LightSwitchApplication.ProjectClientMap_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ProjectClientMap" EntitySet="ProjectClientMaps" />
+    </AssociationSet>
+    <AssociationSet Name="ProjectClientMap_Project" Association="LightSwitchApplication.ProjectClientMap_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="ProjectClientMap" EntitySet="ProjectClientMaps" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_Project" Association="LightSwitchApplication.Ticket_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

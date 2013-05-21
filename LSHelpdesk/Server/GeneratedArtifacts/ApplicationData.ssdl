@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ApplicationDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ApplicationDataStore">
+    <EntitySet Name="Tickets" EntityType="ApplicationDataStore.Ticket" store:Type="Tables" Schema="dbo" Table="Tickets" />
+    <EntitySet Name="Actions" EntityType="ApplicationDataStore.Action" store:Type="Tables" Schema="dbo" Table="Actions" />
+    <EntitySet Name="Clients" EntityType="ApplicationDataStore.Client" store:Type="Tables" Schema="dbo" Table="Clients" />
+    <EntitySet Name="Users" EntityType="ApplicationDataStore.User" store:Type="Tables" Schema="dbo" Table="Users" />
+    <EntitySet Name="ClientUserMaps" EntityType="ApplicationDataStore.ClientUserMap" store:Type="Tables" Schema="dbo" Table="ClientUserMaps" />
+    <EntitySet Name="Projects" EntityType="ApplicationDataStore.Project" store:Type="Tables" Schema="dbo" Table="Projects" />
+    <EntitySet Name="ProjectClientMaps" EntityType="ApplicationDataStore.ProjectClientMap" store:Type="Tables" Schema="dbo" Table="ProjectClientMaps" />
+    <AssociationSet Name="Action_Ticket" Association="ApplicationDataStore.Action_Ticket">
+      <End Role="Ticket" EntitySet="Tickets" />
+      <End Role="Action" EntitySet="Actions" />
+    </AssociationSet>
+    <AssociationSet Name="ClientUserMap_User" Association="ApplicationDataStore.ClientUserMap_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ClientUserMap" EntitySet="ClientUserMaps" />
+    </AssociationSet>
+    <AssociationSet Name="ClientUserMap_Client" Association="ApplicationDataStore.ClientUserMap_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ClientUserMap" EntitySet="ClientUserMaps" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_Client" Association="ApplicationDataStore.Ticket_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_User" Association="ApplicationDataStore.Ticket_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+    <AssociationSet Name="ProjectClientMap_Client" Association="ApplicationDataStore.ProjectClientMap_Client">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ProjectClientMap" EntitySet="ProjectClientMaps" />
+    </AssociationSet>
+    <AssociationSet Name="ProjectClientMap_Project" Association="ApplicationDataStore.ProjectClientMap_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="ProjectClientMap" EntitySet="ProjectClientMaps" />
+    </AssociationSet>
+    <AssociationSet Name="Ticket_Project" Association="ApplicationDataStore.Ticket_Project">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="Ticket" EntitySet="Tickets" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Ticket">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="ShortDescription" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Description" Type="nvarchar" MaxLength="255" />
+    <Property Name="DateOpened" Type="datetime" Nullable="false" />
+    <Property Name="DateClosed" Type="datetime" />
+    <Property Name="Ticket_Client" Type="int" Nullable="false" />
+    <Property Name="Ticket_User" Type="int" Nullable="false" />
+    <Property Name="Ticket_Project" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Action">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="ActionDate" Type="datetime" Nullable="false" />
+    <Property Name="ActionText" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Time" Type="decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="Action_Ticket" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="IsExternal" Type="bit" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="255" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ADUserName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ADsid" Type="nvarchar" MaxLength="255" />
+    <Property Name="Email" Type="nvarchar" MaxLength="255" />
+    <Property Name="IsAD" Type="bit" />
+    <Property Name="IsTech" Type="bit" />
+    <Property Name="IsQueue" Type="bit" />
+  </EntityType>
+  <EntityType Name="ClientUserMap">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="ClientUserMap_User" Type="int" Nullable="false" />
+    <Property Name="ClientUserMap_Client" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="ProjectClientMap">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
+    <Property Name="ProjectClientMap_Client" Type="int" Nullable="false" />
+    <Property Name="ProjectClientMap_Project" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="Action_Ticket">
+    <End Role="Ticket" Type="ApplicationDataStore.Ticket" Multiplicity="1" />
+    <End Role="Action" Type="ApplicationDataStore.Action" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ticket">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Action">
+        <PropertyRef Name="Action_Ticket" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientUserMap_User">
+    <End Role="User" Type="ApplicationDataStore.User" Multiplicity="1" />
+    <End Role="ClientUserMap" Type="ApplicationDataStore.ClientUserMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientUserMap">
+        <PropertyRef Name="ClientUserMap_User" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientUserMap_Client">
+    <End Role="Client" Type="ApplicationDataStore.Client" Multiplicity="1" />
+    <End Role="ClientUserMap" Type="ApplicationDataStore.ClientUserMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientUserMap">
+        <PropertyRef Name="ClientUserMap_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_Client">
+    <End Role="Client" Type="ApplicationDataStore.Client" Multiplicity="1" />
+    <End Role="Ticket" Type="ApplicationDataStore.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_User">
+    <End Role="User" Type="ApplicationDataStore.User" Multiplicity="1" />
+    <End Role="Ticket" Type="ApplicationDataStore.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_User" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjectClientMap_Client">
+    <End Role="Client" Type="ApplicationDataStore.Client" Multiplicity="1" />
+    <End Role="ProjectClientMap" Type="ApplicationDataStore.ProjectClientMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectClientMap">
+        <PropertyRef Name="ProjectClientMap_Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjectClientMap_Project">
+    <End Role="Project" Type="ApplicationDataStore.Project" Multiplicity="1" />
+    <End Role="ProjectClientMap" Type="ApplicationDataStore.ProjectClientMap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectClientMap">
+        <PropertyRef Name="ProjectClientMap_Project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Ticket_Project">
+    <End Role="Project" Type="ApplicationDataStore.Project" Multiplicity="1" />
+    <End Role="Ticket" Type="ApplicationDataStore.Ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ticket">
+        <PropertyRef Name="Ticket_Project" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
